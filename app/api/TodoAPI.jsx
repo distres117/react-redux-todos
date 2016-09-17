@@ -28,4 +28,4 @@ class TodoAPI {
     }
 }
 
-module.exports = TodoAPI;
+export default TodoAPI;

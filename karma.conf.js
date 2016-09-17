@@ -6,8 +6,8 @@ module.exports = function(config){
         singleRun: true,
         frameworks: ['mocha'],
         files: [
-            'app/tests/**/*.test.jsx',
-            'node_modules/jquery/dist/jquery.min.js', 
+            'node_modules/jquery/dist/jquery.min.js',
+            'app/tests/**/*.test.jsx', 
             'node_modules/foundation-sites/dist/foundation.min.js',
             ],
         preprocessors: {
