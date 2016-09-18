@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {addTodo} from 'actions';
+import {startAddTodo} from 'actions';
 
 
 export class AddTodo extends React.Component{
@@ -11,7 +11,7 @@ export class AddTodo extends React.Component{
         let todo = this.refs.newTodo.value;
         if (!todo) return;
         this.refs.newTodo.value = '';
-        dispatch(addTodo(todo));
+        dispatch(startAddTodo(todo));
     }
     render(){  
         return (
