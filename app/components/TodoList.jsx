@@ -7,7 +7,7 @@ export class TodoList extends React.Component{
     render(){
         let {todos, showCompleted, searchText} = this.props;
         let renderTodos = ()=>{
-            if (!todos.length){
+            if (!showCompleted && todos.every(t=>t.completed)){
                 return <p className="container__message">Nothing to do</p>
             }
             return TodoAPI.filterTodos(todos, showCompleted, searchText).map((item)=>{

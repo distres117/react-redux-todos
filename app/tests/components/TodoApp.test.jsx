@@ -2,9 +2,8 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     expect = require('expect'),
     $ = require('jquery'),
-    TestUtils = require('react-addons-test-utils'),
-    TodoApp = require('TodoApp');
-
+    TestUtils = require('react-addons-test-utils');
+import {TodoApp} from 'TodoApp';
 import {Provider} from 'react-redux';
 import TodoList from 'TodoList';
 import {configure} from 'configureStore';

@@ -1,4 +1,4 @@
-import firebase, {firebaseRef} from 'app/firebase/';
+import firebase, {firebaseRef, githubProvider} from 'app/firebase/';
 import moment from 'moment';
 
 export const setSearchText = (searchText) => {
@@ -21,7 +21,7 @@ export const startAddTodo = (text) => {
             createdAt: moment().unix(),
             completedAt: null
         };
-        let todoRef = firebaseRef.child('todos').push(todo)
+        let todoRef = firebaseRef.child(`users/${getState().auth.uid}/todos`).push(todo)
         return todoRef.then(()=>{
             console.log(todoRef.key);
             dispatch(addTodo({
@@ -46,7 +46,7 @@ export const updateTodo = (id, updates) => {
 
 export const startToggleTodo = (id, completed)=>{
     return (dispatch, getState)=>{
-        let todoRef = firebaseRef.child(`todos/${id}`);
+        let todoRef = firebaseRef.child(`users/${getState().auth.uid}/todos/${id}`);
         let updates = {
             completed,
             completedAt: completed ? moment().unix(): null 
@@ -62,4 +62,53 @@ export const addTodos = (todos) => {
         type: 'ADD_TODOS',
         todos
     }
+};
+
+export const startGetTodos = ()=>{
+    return (dispatch, getState) =>{
+        return firebaseRef.child(`users/${getState().auth.uid}/todos`).once('value')
+        .then((data)=>{
+            let todosData = data.val() || {};
+            let todos = Object.keys(todosData).map((key)=>{
+                return {
+                    ...todosData[key],
+                    id:key
+                };
+            });
+            dispatch(addTodos(todos));
+        });
+
+    };
+};
+
+export const login = (id)=>{
+    return {
+        type:'LOGIN',
+        uid: id
+    };
 }
+export const logout = ()=>{
+    return {
+        type: 'LOGOUT'
+    };
+}
+
+export const startLogin = ()=>{
+    return (dispatch, getState)=>{
+        return firebase.auth().signInWithPopup(githubProvider)
+        .then((result)=>{
+            console.log('logged in', result);
+        },(err)=>{
+            console.log('unable to auth', err);
+        });
+    };
+};
+
+export const startLogout = ()=>{
+    return (dispatch, getState)=>{
+        return firebase.auth().signOut()
+        .then(()=>{
+            console.log('logged out');
+        });
+    };
+};
